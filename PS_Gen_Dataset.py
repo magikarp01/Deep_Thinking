@@ -22,18 +22,41 @@ def prefix_sum(bit_list):
 def gen_data(X_name="train_X.pt", y_name="train_y.pt", num_samples=10000, size=32):
     X_data = torch.zeros([num_samples, 1, size], dtype=torch.float32)
     y_data = torch.zeros([num_samples, size], dtype=torch.long)
+    # y_data = torch.zeros([num_samples, 1, size], dtype=torch.long)
     for i in tqdm(range(num_samples)):
         new_str = np.expand_dims(gen_string(size),axis=0)
         X_data[i] = torch.tensor(new_str, dtype = torch.float32, requires_grad = True)
-        y_data[i] = torch.tensor(prefix_sum(new_str), dtype = torch.long)
+        output_str = prefix_sum(new_str)
+        # output_str = np.expand_dims(prefix_sum(new_str),axis=0)
+        y_data[i] = torch.tensor(output_str, dtype = torch.long)
 
     print("done")
 
     torch.save(X_data, X_name)
     torch.save(y_data, y_name)
 
-# gen_data("train_X.pt", "train_y.pt", num_samples=10000)
-# gen_data("test_X.pt", "test_y.pt", num_samples=10000, size=132)
+def gen_alt_data(X_name="train_alt_X.pt", y_name="train_alt_y.pt", num_samples=10000, size=32):
+    X_data = torch.zeros([num_samples, 1, size], dtype=torch.float32)
+    # y_data = torch.zeros([num_samples, size], dtype=torch.long)
+    y_data = torch.zeros([num_samples, 1, size], dtype=torch.float32)
+    for i in tqdm(range(num_samples)):
+        new_str = np.expand_dims(gen_string(size),axis=0)
+        X_data[i] = torch.tensor(new_str, dtype = torch.float32, requires_grad = True)
+        # output_str = prefix_sum(new_str)
+        output_str = np.expand_dims(prefix_sum(new_str),axis=0)
+        y_data[i] = torch.tensor(output_str, dtype = torch.float32)
+
+    print("done")
+
+    torch.save(X_data, X_name)
+    torch.save(y_data, y_name)
+
+if __name__ == "__main__":
+    # gen_data("train_X.pt", "train_y.pt", num_samples=10000)
+    # gen_data("test_X.pt", "test_y.pt", num_samples=10000, size=132)
+    
+    gen_alt_data("train_alt_X.pt", "train_alt_y.pt", num_samples=10000)
+    gen_alt_data("test_alt_X.pt", "test_alt_y.pt", num_samples=10000, size=132)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 

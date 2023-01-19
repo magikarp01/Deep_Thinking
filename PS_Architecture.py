@@ -69,9 +69,9 @@ class PrefixSumNN_DT(nn.Module):
         self.l1 = nn.Conv1d(in_channels = 1, out_channels = 120, 
         kernel_size=3, padding=1, bias=False)
 
-        iter_block = make_iter_block()
+        self.iter_block = make_iter_block()
         # want to repeat the iter_block
-        self.iterations = nn.Sequential(*[iter_block for i in range(num_iter)])
+        self.iterations = nn.Sequential(*[self.iter_block for i in range(num_iter)])
 
         # in_channels should be 120, out_channels = 60
         self.l2 = nn.Conv1d(in_channels = 120, out_channels = 60, 
@@ -86,7 +86,20 @@ class PrefixSumNN_DT(nn.Module):
         
         self.layers = nn.Sequential(self.l1, self.iterations, self.l2, 
         self.l3, self.l4)
+    
+    # method for copying existing model but expanding iterations
+    def expand_iterations(self, init_nn):
+        with torch.no_grad():
+            init_state_dict = init_nn.state_dict()
+            self.l1.weight.copy_(init_state_dict['l1.weight'].clone())
+            self.l2.weight.copy_(init_state_dict['l2.weight'].clone())
+            self.l3.weight.copy_(init_state_dict['l3.weight'].clone())
+            self.l4.weight.copy_(init_state_dict['l4.weight'].clone())
 
+            self.iter_block.conv1.weight.copy_(init_state_dict['iter_block.conv1.weight'].clone())
+            self.iter_block.conv2.weight.copy_(init_state_dict['iter_block.conv2.weight'].clone())
+            self.iter_block.conv3.weight.copy_(init_state_dict['iter_block.conv3.weight'].clone())
+            self.iter_block.conv4.weight.copy_(init_state_dict['iter_block.conv4.weight'].clone())
 
     def forward(self, x):
         return self.layers(x)

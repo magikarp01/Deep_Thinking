@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from MS_Architecture import MazeSolvingNN_FF, MazeSolvingNN_DT
-from MS_Gen_Dataset import MazeDataset
+from MS_Gen_Dataset import MazeSolvingDataset
 from Train_Model import train_loop
 from torch.utils.data import Dataset, DataLoader
 
@@ -10,8 +10,8 @@ print(f"Using {device} device")
 
 loss_fn = nn.CrossEntropyLoss()
 
-training_PS_data = MazeDataset("data/maze_data_train_9")
-training_dataloader = DataLoader(training_PS_data, batch_size=50, shuffle=True)
+training_MS_data = MazeSolvingDataset("data/maze_data_train_9")
+training_dataloader = DataLoader(training_MS_data, batch_size=50, shuffle=True)
 
 num_epochs = 10
 num_iter = 6

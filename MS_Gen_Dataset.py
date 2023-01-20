@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-class MazeDataset(Dataset):
+class MazeSolvingDataset(Dataset):
     def __init__(self, root_name):
         self.inputs = torch.tensor(np.load(root_name + '/inputs.npy'), 
         dtype=torch.float32, requires_grad=True, device=device)
@@ -24,15 +24,4 @@ class MazeDataset(Dataset):
 
 if __name__ == '__main__':
     # MazeDataset(root='data', train= True, size= 9, download= True)
-    inputs = np.load('data/maze_data_train_9/inputs.npy')
-    solutions = np.load('data/maze_data_train_9/solutions.npy')
-    print(inputs.shape)
-    print(solutions.shape)
-
-    train_dataloader = DataLoader(MazeDataset('data/maze_data_train_9'))
-    train_features, train_labels = next(iter(train_dataloader))
-    print(f"Feature batch shape: {train_features.size()}")
-    print(f"Labels batch shape: {train_labels.size()}")
-    # print(train_features)
-    # print(train_labels)
-
+    MazeDataset(root='data', train= False, size= 13, download= True)

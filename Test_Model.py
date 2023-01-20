@@ -35,16 +35,16 @@ if __name__ == '__main__':
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using {device} device")
-    testing_PS_data = PrefixSumDataset("test_X.pt", "test_y.pt")
+    testing_PS_data = PrefixSumDataset("data/PS_test_X.pt", "data/PS_test_y.pt")
     testing_dataloader = DataLoader(testing_PS_data, batch_size=10, shuffle=True)
 
     loss_fn = nn.CrossEntropyLoss()
 
     ff_nn = PrefixSumNN_FF(num_iter=2).to(device)
-    ff_nn.load_state_dict(torch.load('PS_FF.pth'))
+    ff_nn.load_state_dict(torch.load('models/PS_FF.pth'))
 
     init_dt_nn = PrefixSumNN_DT(num_iter=2).to(device)
-    init_dt_nn.load_state_dict(torch.load('PS_DT.pth'))
+    init_dt_nn.load_state_dict(torch.load('models/PS_DT.pth'))
     dt_nn = PrefixSumNN_DT(num_iter=1).to(device)
     dt_nn.expand_iterations(init_dt_nn)
 

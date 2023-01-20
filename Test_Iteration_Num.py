@@ -14,12 +14,12 @@ from Test_Model import test_model
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using {device} device")
 
-testing_PS_data = PrefixSumDataset("test_X.pt", "test_y.pt")
+testing_PS_data = PrefixSumDataset("data/PS_test_X.pt", "data/PS_test_y.pt")
 testing_PS_dataloader = DataLoader(testing_PS_data, batch_size=10, shuffle=True)
-training_PS_data = PrefixSumDataset("train_X.pt", "train_y.pt")
+training_PS_data = PrefixSumDataset("data/PS_train_X.pt", "data/PS_train_y.pt")
 
 init_dt_nn = PrefixSumNN_DT(num_iter=2).to(device)
-init_dt_nn.load_state_dict(torch.load('PS_DT.pth'))
+init_dt_nn.load_state_dict(torch.load('models/PS_DT.pth'))
 
 # Two metrics: accuracy (rounding to 0 or 1) or typical loss
 def get_accuracy(pred, y):

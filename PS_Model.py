@@ -10,7 +10,7 @@ print(f"Using {device} device")
 
 loss_fn = nn.CrossEntropyLoss()
 
-training_PS_data = PrefixSumDataset("train_X.pt", "train_y.pt")
+training_PS_data = PrefixSumDataset("data/PS_train_X.pt", "data/PS_train_y.pt")
 training_dataloader = DataLoader(training_PS_data, batch_size=150, shuffle=True)
 
 def get_accuracy(pred, y):
@@ -50,7 +50,7 @@ if __name__=="__main__":
     for i in range(num_epochs):
         print(f"At epoch {i}, ", end="")
         train_loop(ff_nn, ff_optimizer)
-    torch.save(ff_nn.state_dict(), 'PS_FF.pth')
+    torch.save(ff_nn.state_dict(), 'models/PS_FF.pth')
 
     print("Training dt_nn")
     dt_nn = PrefixSumNN_DT(num_iter=2).to(device)
@@ -58,6 +58,6 @@ if __name__=="__main__":
     for i in range(num_epochs):
         print(f"At epoch {i}, ", end="")
         train_loop(dt_nn, dt_optimizer)
-    torch.save(dt_nn.state_dict(), 'PS_DT.pth')
+    torch.save(dt_nn.state_dict(), 'models/PS_DT.pth')
 
 

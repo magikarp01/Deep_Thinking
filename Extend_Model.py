@@ -15,7 +15,7 @@ def extend_ps_nn(file, nn_class, start_iter, end_iter):
 
 if __name__ == '__main__':
     start_nn = PrefixSumNN_DT(num_iter=2)
-    start_nn.load_state_dict(torch.load('PS_DT.pth'))
+    start_nn.load_state_dict(torch.load('models/PS_DT.pth'))
     print(start_nn.state_dict().keys())
     state_dictionary = start_nn.state_dict()
     print(state_dictionary['iterations.0.conv1.weight'] == state_dictionary['iterations.1.conv1.weight'])

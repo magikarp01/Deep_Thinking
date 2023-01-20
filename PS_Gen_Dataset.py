@@ -19,7 +19,7 @@ def prefix_sum(bit_list):
     return sum_list
 
 
-def gen_data(X_name="train_X.pt", y_name="train_y.pt", num_samples=10000, size=32):
+def gen_data(X_name="data/PS_train_X.pt", y_name="data/PS_train_y.pt", num_samples=10000, size=32):
     X_data = torch.zeros([num_samples, 1, size], dtype=torch.float32)
     y_data = torch.zeros([num_samples, size], dtype=torch.long)
     # y_data = torch.zeros([num_samples, 1, size], dtype=torch.long)
@@ -52,8 +52,8 @@ def gen_alt_data(X_name="train_alt_X.pt", y_name="train_alt_y.pt", num_samples=1
     torch.save(y_data, y_name)
 
 if __name__ == "__main__":
-    gen_data("train_X.pt", "train_y.pt", num_samples=10000, size=16)
-    gen_data("test_X.pt", "test_y.pt", num_samples=10000, size=132)
+    gen_data("data/PS_train_X.pt", "data/PS_train_y.pt", num_samples=10000, size=16)
+    gen_data("data/PS_test_X.pt", "data/PS_test_y.pt", num_samples=1000, size=512)
     
     # gen_alt_data("train_alt_X.pt", "train_alt_y.pt", num_samples=10000)
     # gen_alt_data("test_alt_X.pt", "test_alt_y.pt", num_samples=10000, size=132)

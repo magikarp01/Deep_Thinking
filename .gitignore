@@ -1,9 +1,9 @@
-PS_DT.pth
-PS_FF.pth
-test_X.pt
-test_y.pt
-train_X.pt
-train_y.pt
+models/PS_DT.pth
+models/PS_FF.pth
+data/PS_test_X.pt
+data/PS_test_y.pt
+data/PS_train_X.pt
+data/PS_train_y.pt
 test_alt_y.pt
 test_alt_X.pt
 train_alt_X.pt
@@ -11,3 +11,9 @@ train_alt_y.pt
 __pycache__/
 alt_PS_Model.py
 alt_PS_Architecture.py
+PS_FF.pth
+__pycache__/PS_Architecture.cpython-310.pyc
+__pycache__/PS_Gen_Dataset.cpython-310.pyc
+data/maze_data_train_9/inputs.npy
+data/maze_data_train_9/solutions.npy
+models/MS_FF.pth

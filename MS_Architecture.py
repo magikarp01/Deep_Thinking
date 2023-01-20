@@ -15,11 +15,11 @@ class IterationBlock(nn.Module):
         # next, can try bias=True
         self.conv1 = nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
         kernel_size=(3,3), padding=1, bias=False)
-        self.conv2 = nn.Conv1d(in_channels=in_channels, out_channels=out_channels,
+        self.conv2 = nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
         kernel_size=(3,3), padding=1, bias=False)
-        self.conv3 = nn.Conv1d(in_channels=in_channels, out_channels=out_channels,
+        self.conv3 = nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
         kernel_size=(3,3), padding=1, bias=False)
-        self.conv4 = nn.Conv1d(in_channels=in_channels, out_channels=out_channels,
+        self.conv4 = nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
         kernel_size=(3,3), padding=1, bias=False)
     
     def forward(self, x):
@@ -46,6 +46,46 @@ class MazeSolvingNN_DT(nn.Module):
         self.iter_block = make_iter_block()
         # want to repeat the iter_block
         self.iterations = nn.Sequential(*[self.iter_block for i in range(num_iter)])
+
+        # in_channels should be 120, out_channels = 60
+        self.l2 = nn.Conv2d(in_channels = out_channels, out_channels = 32, 
+        kernel_size=(3,3), padding=1, bias=False)
+
+        # in_channels 60, out_channels 30
+        self.l3 = nn.Conv2d(in_channels = 32, out_channels = 8, 
+        kernel_size=(3,3), padding=1, bias=False)
+
+        self.l4 = nn.Conv2d(in_channels = 8, out_channels = 2, 
+        kernel_size=(3,3), padding=1, bias=False)
+        
+        self.layers = nn.Sequential(self.l1, self.iterations, self.l2, 
+        self.l3, self.l4)
+    
+    # method for copying existing model but expanding iterations
+    def expand_iterations(self, init_nn):
+        with torch.no_grad():
+            init_state_dict = init_nn.state_dict()
+            self.l1.weight.copy_(init_state_dict['l1.weight'].clone())
+            self.l2.weight.copy_(init_state_dict['l2.weight'].clone())
+            self.l3.weight.copy_(init_state_dict['l3.weight'].clone())
+            self.l4.weight.copy_(init_state_dict['l4.weight'].clone())
+
+            self.iter_block.conv1.weight.copy_(init_state_dict['iter_block.conv1.weight'].clone())
+            self.iter_block.conv2.weight.copy_(init_state_dict['iter_block.conv2.weight'].clone())
+            self.iter_block.conv3.weight.copy_(init_state_dict['iter_block.conv3.weight'].clone())
+            self.iter_block.conv4.weight.copy_(init_state_dict['iter_block.conv4.weight'].clone())
+
+    def forward(self, x):
+        return self.layers(x)
+    
+class MazeSolvingNN_FF(nn.Module):
+    def __init__(self, num_iter):
+        super().__init__()
+        self.l1 = nn.Conv2d(in_channels = 3, out_channels = out_channels, 
+        kernel_size=(3,3), padding=1, bias=False)
+
+        # want different iter blocks
+        self.iterations = nn.Sequential(*[make_iter_block() for i in range(num_iter)])
 
         # in_channels should be 120, out_channels = 60
         self.l2 = nn.Conv2d(in_channels = out_channels, out_channels = 32, 

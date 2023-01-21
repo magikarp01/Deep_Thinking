@@ -26,7 +26,7 @@ if __name__=="__main__":
         print(f"At epoch {i}, ", end="")
         train_loop(ff_nn, training_dataloader, ff_optimizer, max_batches=max_batches)
     
-    torch.save(ff_nn.state_dict(), 'models/MS_FF.pth')
+    torch.save(ff_nn.state_dict(), 'models/MS_FF_' + str(num_iter) + '.pth')
 
 
     print("Training dt_nn")
@@ -38,4 +38,4 @@ if __name__=="__main__":
         print(f"At epoch {i}, ", end="")
         train_loop(dt_nn, training_dataloader, ff_optimizer, max_batches=max_batches)
     
-    torch.save(dt_nn.state_dict(), 'models/MS_DT.pth')
+    torch.save(dt_nn.state_dict(), 'models/MS_DT_' + str(num_iter) + '.pth')

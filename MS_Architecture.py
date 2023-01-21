@@ -58,8 +58,8 @@ class MazeSolvingNN_DT(nn.Module):
         self.l4 = nn.Conv2d(in_channels = 8, out_channels = 2, 
         kernel_size=(3,3), padding=1, bias=False)
         
-        self.layers = nn.Sequential(self.l1, self.iterations, self.l2, 
-        self.l3, self.l4)
+        self.layers = nn.Sequential(self.l1, nn.ReLU(), self.iterations, 
+        self.l2, nn.ReLU(), self.l3, nn.ReLU(), self.l4)
     
     # method for copying existing model but expanding iterations
     def expand_iterations(self, init_nn):
@@ -98,8 +98,8 @@ class MazeSolvingNN_FF(nn.Module):
         self.l4 = nn.Conv2d(in_channels = 8, out_channels = 2, 
         kernel_size=(3,3), padding=1, bias=False)
         
-        self.layers = nn.Sequential(self.l1, self.iterations, self.l2, 
-        self.l3, self.l4)
+        self.layers = nn.Sequential(self.l1, nn.ReLU(), self.iterations, 
+        self.l2, nn.ReLU(), self.l3, nn.ReLU(), self.l4)
     
     # method for copying existing model but expanding iterations
     def expand_iterations(self, init_nn):

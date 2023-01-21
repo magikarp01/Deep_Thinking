@@ -14,7 +14,7 @@ def get_accuracy(pred, y):
     return torch.sum(rounded == y)/y.numel()
 
 def test_model(nn, dataloader, loss_fn = nn.CrossEntropyLoss(), verbose=False, 
-max_batches=100):
+max_batches=None):
     torch.no_grad()
     running_loss = 0
     running_accuracy = 0
@@ -27,7 +27,7 @@ max_batches=100):
         running_accuracy += get_accuracy(pred, y)
         num_batches += 1
         running_loss += loss.item()
-        if batch >= max_batches:
+        if max_batches is not None and batch >= max_batches:
             break
 
     if verbose:
@@ -50,20 +50,20 @@ if __name__ == '__main__':
 
     # ff_nn = PrefixSumNN_FF(num_iter=2).to(device)
     # ff_nn.load_state_dict(torch.load('models/PS_FF.pth'))
-    ff_nn = MazeSolvingNN_FF(num_iter=6).to(device)
-    ff_nn.load_state_dict(torch.load('models/MS_FF.pth'))
+    ff_nn = MazeSolvingNN_FF(num_iter=20).to(device)
+    ff_nn.load_state_dict(torch.load('models/MS_FF_20.pth'))
 
     # init_dt_nn = PrefixSumNN_DT(num_iter=2).to(device)
     # init_dt_nn.load_state_dict(torch.load('models/PS_DT.pth'))
-    init_dt_nn = MazeSolvingNN_DT(num_iter=6).to(device)
-    init_dt_nn.load_state_dict(torch.load('models/MS_DT.pth'))
+    init_dt_nn = MazeSolvingNN_DT(num_iter=20).to(device)
+    init_dt_nn.load_state_dict(torch.load('models/MS_DT_20.pth'))
 
-    dt_nn = MazeSolvingNN_DT(num_iter=5).to(device)
+    dt_nn = MazeSolvingNN_DT(num_iter=30).to(device)
     dt_nn.expand_iterations(init_dt_nn)
 
-    print("For FF_NN: ")
-    test_model(ff_nn, testing_dataloader, verbose=True)
-    print()
+    # print("For FF_NN: ")
+    # test_model(ff_nn, testing_dataloader, verbose=True)
+    # print()
 
     print("For initial DT_NN: ")
     test_model(init_dt_nn, testing_dataloader, verbose=True)

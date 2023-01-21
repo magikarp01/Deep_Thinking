@@ -2,4 +2,4 @@ __pycache__/
 archive/
 data/
 models/
-
+.vscode/

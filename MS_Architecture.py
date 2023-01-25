@@ -42,10 +42,11 @@ class MazeSolvingNN_DT(nn.Module):
         super().__init__()
         self.l1 = nn.Conv2d(in_channels = 3, out_channels = out_channels, 
         kernel_size=(3,3), padding=1, bias=False)
-
+        
         self.iter_block = make_iter_block()
         # want to repeat the iter_block
         self.iterations = nn.Sequential(*[self.iter_block for i in range(num_iter)])
+        self.num_iter = num_iter
 
         # in_channels should be 120, out_channels = 60
         self.l2 = nn.Conv2d(in_channels = out_channels, out_channels = 32, 
@@ -74,6 +75,11 @@ class MazeSolvingNN_DT(nn.Module):
             self.iter_block.conv2.weight.copy_(init_state_dict['iter_block.conv2.weight'].clone())
             self.iter_block.conv3.weight.copy_(init_state_dict['iter_block.conv3.weight'].clone())
             self.iter_block.conv4.weight.copy_(init_state_dict['iter_block.conv4.weight'].clone())
+
+            # these are probably unnecessary
+            self.iterations = nn.Sequential(*[self.iter_block for i in range(self.num_iter)])
+            self.layers = nn.Sequential(self.l1, nn.ReLU(), self.iterations, 
+            self.l2, nn.ReLU(), self.l3, nn.ReLU(), self.l4)
 
     def forward(self, x):
         return self.layers(x)

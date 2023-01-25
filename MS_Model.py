@@ -14,19 +14,19 @@ training_MS_data = MazeSolvingDataset("data/maze_data_train_9")
 training_dataloader = DataLoader(training_MS_data, batch_size=50, shuffle=True)
 
 num_epochs = 10
-num_iter = 6
+num_iter = 30
 max_batches = 200
 if __name__=="__main__":
-    print("Training ff_nn")
-    ff_nn = MazeSolvingNN_FF(num_iter=num_iter).to(device)
-    ff_optimizer = torch.optim.SGD(ff_nn.parameters(), lr=.001,
-    weight_decay=2e-4, momentum=.9)
+    # print("Training ff_nn")
+    # ff_nn = MazeSolvingNN_FF(num_iter=num_iter).to(device)
+    # ff_optimizer = torch.optim.SGD(ff_nn.parameters(), lr=.001,
+    # weight_decay=2e-4, momentum=.9)
 
-    for i in range(num_epochs):
-        print(f"At epoch {i}, ", end="")
-        train_loop(ff_nn, training_dataloader, ff_optimizer, max_batches=max_batches)
+    # for i in range(num_epochs):
+    #     print(f"At epoch {i}, ", end="")
+    #     train_loop(ff_nn, training_dataloader, ff_optimizer, max_batches=max_batches)
     
-    torch.save(ff_nn.state_dict(), 'models/MS_FF_' + str(num_iter) + '.pth')
+    # torch.save(ff_nn.state_dict(), 'models/MS_FF_' + str(num_iter) + '.pth')
 
 
     print("Training dt_nn")
@@ -36,6 +36,6 @@ if __name__=="__main__":
 
     for i in range(num_epochs):
         print(f"At epoch {i}, ", end="")
-        train_loop(dt_nn, training_dataloader, ff_optimizer, max_batches=max_batches)
+        train_loop(dt_nn, training_dataloader, ff_optimizer, gradient_clipping=True, max_batches=max_batches)
     
-    torch.save(dt_nn.state_dict(), 'models/MS_DT_' + str(num_iter) + '.pth')
+    torch.save(dt_nn.state_dict(), 'models/MS_DT_' + str(num_iter) + '_3.pth')

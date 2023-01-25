@@ -4,6 +4,7 @@ import torch
 from torch import nn
 from PS_Architecture import PrefixSumNN_DT, PrefixSumNN_FF
 from MS_Architecture import MazeSolvingNN_FF, MazeSolvingNN_DT
+from MS_Architecture_Recall import MazeSolvingNN_Recall
 from PS_Gen_Dataset import PrefixSumDataset
 from MS_Gen_Dataset import MazeSolvingDataset
 import matplotlib.pyplot as plt
@@ -64,11 +65,17 @@ if __name__ == '__main__':
     # init_MS_dt_nn = MazeSolvingNN_DT(num_iter=20).to(device)
     # init_MS_dt_nn.load_state_dict(torch.load('models/MS_DT_20.pth'))
 
+    init_MS_recall_nn = MazeSolvingNN_Recall(num_iter=20).to(device)
+    init_MS_recall_nn.load_state_dict(torch.load('models/MS_Recall_20.pth'))
+
     # plot_iteration_accuracy(init_PS_dt_nn, PrefixSumNN_DT, testing_PS_dataloader, 
     # title="Prefix Sum Model Trained on 20 Iterations 2", xrange=(5,40))
 
-    plot_iteration_accuracy(init_MS_dt_nn, MazeSolvingNN_DT, testing_MS_dataloader, 
-    title="Maze Solving Model Trained on 6 Iterations 2", xrange=(1,20))
+    # plot_iteration_accuracy(init_MS_dt_nn, MazeSolvingNN_DT, testing_MS_dataloader, 
+    # title="Maze Solving Model Trained on 6 Iterations 2", xrange=(1,20))
 
     # plot_iteration_accuracy(init_MS_dt_nn, MazeSolvingNN_DT, testing_MS_dataloader, 
     # title="Maze Solving Model Trained on 20 Iterations 2", xrange=(5,40))
+
+    plot_iteration_accuracy(init_MS_recall_nn, MazeSolvingNN_Recall, testing_MS_dataloader, 
+    title="Maze Solving Recall Model Trained on 20 Iterations", xrange=(5,40))

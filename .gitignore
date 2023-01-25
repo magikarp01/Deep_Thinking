@@ -3,3 +3,5 @@ archive/
 data/
 models/
 .vscode/
+*.pyc
+*.pth

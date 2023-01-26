@@ -1,3 +1,5 @@
+
+
 from easy_to_hard_data import MazeDataset
 import torch
 import random
@@ -23,5 +25,5 @@ class MazeSolvingDataset(Dataset):
         return self.inputs[idx], self.solutions[idx]
 
 if __name__ == '__main__':
-    # MazeDataset(root='data', train= True, size= 9, download= True)
+    MazeDataset(root='data', train= True, size= 9, download= True)
     MazeDataset(root='data', train= False, size= 13, download= True)

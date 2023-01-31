@@ -11,7 +11,7 @@ print(f"Using {device} device")
 loss_fn = nn.CrossEntropyLoss()
 
 training_PS_data = PrefixSumDataset("data/PS_train_X.pt", "data/PS_train_y.pt")
-training_dataloader = DataLoader(training_PS_data, batch_size=150, shuffle=True)
+training_dataloader = DataLoader(training_PS_data, batch_size=50, shuffle=True)
 
 def get_accuracy(pred, y):
     logits = torch.nn.functional.softmax(pred, dim=1)[:, 1]
@@ -40,10 +40,11 @@ def train_loop(nn, optimizer):
     print(f"Running accuracy is {running_accuracy/num_batches}")
 
 
-num_epochs = 5
+num_iter = 20
+num_epochs = 10
 if __name__=="__main__":
     print("Training ff_nn")
-    ff_nn = PrefixSumNN_FF(num_iter=2).to(device)
+    ff_nn = PrefixSumNN_FF(num_iter=num_iter).to(device)
     ff_optimizer = torch.optim.Adam(ff_nn.parameters(), weight_decay=2e-4, 
     lr=.001)
     ff_scheduler = torch.optim.lr_scheduler.ExponentialLR(ff_optimizer, gamma=0.9)
@@ -53,7 +54,7 @@ if __name__=="__main__":
     torch.save(ff_nn.state_dict(), 'models/PS_FF.pth')
 
     print("Training dt_nn")
-    dt_nn = PrefixSumNN_DT(num_iter=2).to(device)
+    dt_nn = PrefixSumNN_DT(num_iter=num_iter).to(device)
     dt_optimizer = torch.optim.Adam(dt_nn.parameters(), weight_decay=2e-4, lr=.001)
     for i in range(num_epochs):
         print(f"At epoch {i}, ", end="")

@@ -10,6 +10,7 @@ from MS_Gen_Dataset import MazeSolvingDataset
 import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
+from MS_Architecture_Overthinking_Recall import MazeSolvingNN_Recall_ProgLoss
 
 from torch.utils.data import Dataset, DataLoader
 from Test_Model import test_model
@@ -38,7 +39,7 @@ def plot_iteration_accuracy(dt_nn, nn_constructor, dataloader, title, xrange=(0,
         return accuracy
 
 
-    xaxis = np.arange(xrange[0], xrange[1])
+    xaxis = np.arange(xrange[0], xrange[1], 2)
     yaxis = []
     for i in tqdm(xaxis):
         yaxis.append(iteration_loss(i).item())
@@ -54,28 +55,42 @@ if __name__ == '__main__':
     testing_PS_dataloader = DataLoader(testing_PS_data, batch_size=10, shuffle=True)
 
     testing_MS_data = MazeSolvingDataset("data/maze_data_test_13")
-    testing_MS_dataloader = DataLoader(testing_MS_data, batch_size=10, shuffle=True)
+    testing_MS_dataloader = DataLoader(testing_MS_data, batch_size=10, shuffle=False)
 
-    init_PS_dt_nn = PrefixSumNN_DT(num_iter=2).to(device)
+    init_PS_dt_nn = PrefixSumNN_DT(num_iter=20).to(device)
     init_PS_dt_nn.load_state_dict(torch.load('models/PS_DT.pth'))
 
-    init_MS_dt_nn = MazeSolvingNN_DT(num_iter=6).to(device)
-    init_MS_dt_nn.load_state_dict(torch.load('models/MS_DT_6.pth'))
+    # init_MS_dt_nn = MazeSolvingNN_DT(num_iter=6).to(device)
+    # init_MS_dt_nn.load_state_dict(torch.load('models/MS_DT_6.pth'))
 
-    # init_MS_dt_nn = MazeSolvingNN_DT(num_iter=20).to(device)
-    # init_MS_dt_nn.load_state_dict(torch.load('models/MS_DT_20.pth'))
+    init_MS_dt_nn = MazeSolvingNN_DT(num_iter=20).to(device)
+    init_MS_dt_nn.load_state_dict(torch.load('models/MS_DT_20.pth'))
 
     init_MS_recall_nn = MazeSolvingNN_Recall(num_iter=20).to(device)
     init_MS_recall_nn.load_state_dict(torch.load('models/MS_Recall_20.pth'))
+
+    init_MS_recall_progloss_nn = MazeSolvingNN_Recall_ProgLoss(num_iter=20).to(device)
+    init_MS_recall_progloss_nn.load_state_dict(torch.load('models/MS_Recall_ProgLoss.pth'))
+
 
     # plot_iteration_accuracy(init_PS_dt_nn, PrefixSumNN_DT, testing_PS_dataloader, 
     # title="Prefix Sum Model Trained on 20 Iterations 2", xrange=(5,40))
 
     # plot_iteration_accuracy(init_MS_dt_nn, MazeSolvingNN_DT, testing_MS_dataloader, 
-    # title="Maze Solving Model Trained on 6 Iterations 2", xrange=(1,20))
+    # title="Maze Solving Model Trained on 20 Iterations 2", xrange=(5, 40))
 
     # plot_iteration_accuracy(init_MS_dt_nn, MazeSolvingNN_DT, testing_MS_dataloader, 
     # title="Maze Solving Model Trained on 20 Iterations 2", xrange=(5,40))
 
-    plot_iteration_accuracy(init_MS_recall_nn, MazeSolvingNN_Recall, testing_MS_dataloader, 
-    title="Maze Solving Recall Model Trained on 20 Iterations", xrange=(5,40))
+
+    # plot_iteration_accuracy(init_MS_dt_nn, MazeSolvingNN_DT, testing_MS_dataloader, 
+    # title="Maze Solving DT Loss Model Trained on 20 Iterations", xrange=(5,40))
+
+    # plot_iteration_accuracy(init_MS_recall_nn, MazeSolvingNN_Recall, testing_MS_dataloader, 
+    # title="Maze Solving Recall Loss Model Trained on 20 Iterations", xrange=(5,40))
+
+    plot_iteration_accuracy(init_MS_recall_progloss_nn, MazeSolvingNN_Recall_ProgLoss, testing_MS_dataloader, 
+    title="Maze Solving Recall Progressive Loss Model Trained on Max 20 Iterations", xrange=(5,80))
+
+
+

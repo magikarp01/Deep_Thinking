@@ -11,7 +11,13 @@ out_channels = 128
 
 # only thing that needs to change is the forward method
 class MazeSolvingNN_Recall_ProgLoss(MazeSolvingNN_Recall):
-    
+
+    # init with num_iter iterations, can be either partial or training
+    def __init__(self, num_iter):
+        super().__init__(num_iter)
+        self.partial_iters = num_iter
+        self.training_iters = 0
+
     def set_iters(self, partial_iters, training_iters):
         self.partial_iters = partial_iters
         self.training_iters = training_iters

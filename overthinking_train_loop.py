@@ -15,7 +15,7 @@ def overthink_train_loop(nn, dataloader, optimizer, max_batches=None, gradient_c
     new_iter = -1
 
     for batch, (X, y) in enumerate(dataloader):
-        print(batch)
+        # print(batch)
         # clear existing gradient
         optimizer.zero_grad()
         
@@ -44,10 +44,10 @@ def overthink_train_loop(nn, dataloader, optimizer, max_batches=None, gradient_c
 if __name__ == '__main__':
     num_epochs = 5
     max_iter=20
-    max_batches = 20
+    max_batches = 200
 
     training_MS_data = MazeSolvingDataset("data/maze_data_train_9")
-    training_dataloader = DataLoader(training_MS_data, batch_size=10, shuffle=True)
+    training_dataloader = DataLoader(training_MS_data, batch_size=50, shuffle=True)
     dt_nn = MazeSolvingNN_Recall_ProgLoss(num_iter=1).to(device)
     ff_optimizer = torch.optim.SGD(dt_nn.parameters(), lr=.001,
     weight_decay=2e-4, momentum=.9)
@@ -57,4 +57,4 @@ if __name__ == '__main__':
         overthink_train_loop(dt_nn, training_dataloader, ff_optimizer, gradient_clipping=True, 
         max_iter=max_iter, max_batches=max_batches)
     
-    torch.save(dt_nn.state_dict(), 'models/MS_DT_ProgLoss.pth')
+    torch.save(dt_nn.state_dict(), 'models/MS_Recall_ProgLoss.pth')

@@ -5,6 +5,7 @@ from MS_Architecture import MazeSolvingNN_FF, MazeSolvingNN_DT
 from PS_Gen_Dataset import PrefixSumDataset
 from MS_Gen_Dataset import MazeSolvingDataset
 from MS_Architecture_Recall import MazeSolvingNN_Recall
+from MS_Architecture_Overthinking_Recall import MazeSolvingNN_Recall_ProgLoss
 
 from torch.utils.data import Dataset, DataLoader
 import torch.utils.data as data_utils
@@ -62,16 +63,21 @@ if __name__ == '__main__':
     # ff_nn = MazeSolvingNN_FF(num_iter=20).to(device)
     # ff_nn.load_state_dict(torch.load('models/MS_FF_20.pth'))
 
-    # init_dt_nn = PrefixSumNN_DT(num_iter=2).to(device)
-    # init_dt_nn.load_state_dict(torch.load('models/PS_DT.pth'))
-    init_dt_nn = MazeSolvingNN_DT(num_iter=10).to(device)
-    init_dt_nn.load_state_dict(torch.load('models/MS_DT_20.pth'), strict=False)
+    init_dt_nn = PrefixSumNN_DT(num_iter=2).to(device)
+    init_dt_nn.load_state_dict(torch.load('models/PS_DT.pth'))
+    # init_dt_nn = MazeSolvingNN_DT(num_iter=10).to(device)
+    # init_dt_nn.load_state_dict(torch.load('models/MS_DT_20.pth'), strict=False)
+    # init_dt_nn = MazeSolvingNN_Recall_ProgLoss(num_iter=20).to(device)
+    # init_dt_nn.load_state_dict(torch.load('models/MS_Recall_ProgLoss.pth'), strict=False)
 
     # init_dt_nn = MazeSolvingNN_Recall(num_iter=20).to(device)
     # init_dt_nn.load_state_dict(torch.load('models/MS_Recall_20.pth'))
 
-    dt_nn = MazeSolvingNN_DT(num_iter=30).to(device)
-    dt_nn.expand_iterations(init_dt_nn)
+    # dt_nn = MazeSolvingNN_DT(num_iter=30).to(device)
+    # dt_nn.expand_iterations(init_dt_nn)
+
+    # dt_nn = MazeSolvingNN_Recall_ProgLoss(num_iter=30).to(device)
+    # dt_nn.expand_iterations(init_dt_nn)
 
     # dt_nn = MazeSolvingNN_Recall(num_iter=30).to(device)
     # dt_nn.expand_iterations(init_dt_nn)
